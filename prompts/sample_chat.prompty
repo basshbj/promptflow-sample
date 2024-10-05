@@ -1,0 +1,44 @@
+---
+name: SampleChat
+description: A prompt that uses context to ground an incoming question
+authors:
+  - https://github.com/basshbj
+model:
+  api: chat
+  configuration:
+    type: azure_openai
+    azure_endpoint: ${env:AOAI_ENDPOINT}
+    azure_deployment: ${env:AOAI_DEPLOYMENT}
+    api_key: ${env:AOAI_API_KEY}
+  parameters:
+    max_tokens: 3000
+    temperature: 0.7
+    stream: true
+inputs:
+  question:
+    type: string
+  chat_history:
+    type: list
+sample:
+  question: What is PromptFLow?
+  chat_history: [{ "role": "user", "content": "What is PromptFlow?" }, { "role": "assistant", "content": "PromptFlow is a tool that helps you build LLM apps." }]
+---
+
+system:
+You are an AI assistant whos task is to answer questions and provide information.
+You should answer in a friendly manner and always to engage with the user to keep the conversation going.
+
+# Instructions
+- Use Markdown
+- Use emojis to show your emotions
+- If the user wants to end the conversation, you should response ONLY THE WORD "END" in uppercase
+
+{% if chat_history %}
+{% for message in chat_history %}
+{{ message.role }}: 
+{{ message.content }}
+{% endfor %}
+{% endif %}
+
+user:
+{{question}}
