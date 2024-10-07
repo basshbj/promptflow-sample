@@ -33,8 +33,8 @@ if __name__ == "__main__":
       print(chunk, end="")
       assistant_response += chunk
 
-    chat_history.append({ "role": "user", "content": question })
-    chat_history.append({ "role": "assistant", "content": assistant_response })
+    chat.update_chat_history("user", question)
+    chat.update_chat_history("assistant", assistant_response)
 
     if assistant_response == "END":
       break
